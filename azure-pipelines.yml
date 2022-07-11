@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    subscriptionId: '2c425de7-b058-4586-a449-c2393b195d6a'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'BujjiPipeline-rg'
+    location: 'East US'
+    templateLocation: 'Linked artifact'
+    csmFile: 'https://raw.githubusercontent.com/narrabujji/nb-azure-pipeline-repo/main/CreateWebApp/azuredeploy.json'
+    overrideParameters: '-projectName bujjipipeline'
+    deploymentMode: 'Incremental'
+    deploymentName: 'DeployPipelineTemplate'
